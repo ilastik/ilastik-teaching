@@ -10,7 +10,15 @@ logger = logging.getLogger()
 def build_drawio_image(
     in_path: pathlib.Path, out_path: pathlib.Path, size: str = "1500x2000"
 ):
-    ret = sh.node("./drawio-batch/drawio-batch.js", "--bounds", size, in_path, out_path)
+    ret = sh.node(
+        "./drawio-batch/drawio-batch.js",
+        "--quality",
+        "100",
+        "--bounds",
+        size,
+        in_path,
+        out_path,
+    )
     logger.info(ret)
 
 
@@ -22,6 +30,12 @@ def build_pandoc_pdf(
     ret = sh.pandoc(
         "--to",
         "latex",
+        "--dpi",
+        "200",
+        "--variable",
+        "papersize:a4",
+        "--variable",
+        "geometry:margin=2cm",
         "--variable",
         "mainfont:Palatino",
         "--output",

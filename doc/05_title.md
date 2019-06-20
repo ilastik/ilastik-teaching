@@ -1,5 +1,5 @@
 ---
-title: ilastik teaching material
+title: ilastik training material
 ---
 
 \newpage
