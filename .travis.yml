@@ -1,0 +1,51 @@
+language: generic
+os:
+  - linux
+env:
+  global:
+    - CONDA_ROOT=$HOME/miniconda
+    - BUILD_ENV=build-env
+    - BUILD_ENV_PREFIX=$CONDA_ROOT/envs/$BUILD_ENV
+
+cache:
+  directories:
+    - CONDA_ROOT
+
+install:
+  - echo `npm --version`
+  - sudo apt-get update
+  # install tex
+  - sudo apt install texlive-latex-recommended texlive-fonts-recommended
+  - sudo texhash
+  # install conda/pandoc
+  - export MINICONDA=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  - echo ${CONDA_ROOT}
+  - echo ${BUILD_ENV}
+  - echo ${BUILD_ENV_PREFIX}
+  - if [[ ! -d ${CONDA_ROOT} ]]; then
+      echo "Installing Miniconda...";
+      wget ${MINICONDA} -O miniconda.sh &&
+      bash miniconda.sh -b -p ${CONDA_ROOT};
+    else
+      echo "Using cached Miniconda install";
+    fi
+  - echo ". ${CONDA_ROOT}/etc/profile.d/conda.sh" >> ~/.bashrc
+  - source ~/.bashrc
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - if [[ ! -d ${BUILD_ENV_PREFIX} ]]; then
+      conda create -q -n ${BUILD_ENV} -c conda-forge pandoc sh;
+    else
+      conda install -y -n ${BUILD_ENV} -c conda-forge pandoc sh;
+    fi
+  # install drawio batch
+  - git clone https://github.com/languitar/drawio-batch
+  - cd drawio-batch && npm install && cd ..
+
+script:
+  - conda activate build-env
+  - echo `pwd`
+  - ls -al
+  - python build.py
+  - ls -al ./_build
+
