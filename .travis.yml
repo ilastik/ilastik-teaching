@@ -46,5 +46,6 @@ script:
   - conda activate build-env
   - echo `pwd`
   - ls -al
-  - python -c "import sh;sh.node('drawio-batch/drawio-batch.js', '--help')"
+  - python build.py
+  - ls -al ./_build
 
