@@ -24,8 +24,7 @@ def build_drawio_image(
 
 def build_pandoc_pdf(
     out_doc: pathlib.Path,
-    docs_list: typing.List[pathlib.Path],
-    template_file: pathlib.Path,
+    docs_list: typing.List[pathlib.Path]
 ):
     ret = sh.pandoc(
         "--to",
@@ -38,6 +37,8 @@ def build_pandoc_pdf(
         "geometry:margin=2cm",
         "--variable",
         "mainfont:Palatino",
+        # "-f",
+        # "markdown-implicit_figures",
         "--output",
         out_doc,
         *docs_list
@@ -54,10 +55,9 @@ def main():
         out_path = compiled_path / cmap.name.replace(".drawio", ".png")
         build_drawio_image(cmap, out_path)
 
-    template_file = pathlib.Path("./templates/main.template.tex")
-    out_doc = compiled_path / "doc.pdf"
+    out_doc = compiled_path / "ilastik-training-material.pdf"
     docs_list = sorted([x.absolute() for x in pathlib.Path("./doc").glob("*.md")])
-    build_pandoc_pdf(out_doc.absolute(), docs_list, template_file)
+    build_pandoc_pdf(out_doc.absolute(), docs_list)
 
 
 if __name__ == "__main__":

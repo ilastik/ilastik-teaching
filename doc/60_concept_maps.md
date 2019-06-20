@@ -13,6 +13,18 @@
 
 \newpage
 
+
+
+### Tresholding
+
+![Simple Thresholding Concept Map](./_build/threshold_simple.png){height=1000px}
+
+\newpage
+
+![Hysteresis Thresholding Concept Map](./_build/threshold_hysteresis.png){height=1500px}
+
+\newpage
+
 ### Carving
 
 ![Carving Concept Map](./_build/carving.png){height=1500px}
