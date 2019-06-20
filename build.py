@@ -1,21 +1,28 @@
+import logging
 import pathlib
 import sh
 import typing
 
 
+logger = logging.getLogger()
+
+
 def build_drawio_image(in_path: pathlib.Path, out_path: pathlib.Path, size: str = "1500x2000"):
-    sh.node("./drawio-batch/drawio-batch.js", "--bounds", size, in_path, out_path)
+    ret = sh.node("./drawio-batch/drawio-batch.js", "--bounds", size, in_path, out_path)
+    logger.info(ret)
 
 
 def build_pandoc_pdf(out_doc: pathlib.Path, docs_list: typing.List[pathlib.Path], template_file: pathlib.Path):
-    sh.pandoc(
+    ret = sh.pandoc(
         "--to", "latex",
         "--variable", "mainfont:Palatino",
         "--output", out_doc,
         *docs_list)
+    logger.info(ret)
 
 
 def main():
+    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     concept_maps_path = pathlib.Path("./concept-maps")
     compiled_path = pathlib.Path("./_build")
     compiled_path.mkdir(exist_ok=True)
